@@ -1,0 +1,60 @@
+﻿@using Models
+@using Services
+@inject IPokeApiClient PokeApiClient 
+@page "/pokeDetails/{name}"
+
+@if (Pokemon == null)
+{
+    <p><em>Loading...</em></p>
+}
+else 
+{
+    <div class="row row-align">
+        <div class="col-sm-6">
+            <div class="mt-2">
+                <h1>@Pokemon.Name.Substring(0,1).ToUpper()@Pokemon.Name.Substring(1, Pokemon.Name.Length - 1)</h1>
+                @foreach (var poke  in Pokemon.Types)
+                {
+                    <span class="badge border rounded-pill bg-@poke.PokemonType.Name" style="font-size:medium">
+                        @(poke.PokemonType.Name)
+                    </span>
+                }
+            </div>
+
+            <ul class="list-group list-group-flush mt-4" style="width:20rem;">
+                <li class="list-group-item bg-transparent">
+                    ID #<b class="float-end">@Pokemon.Id</b>
+                </li>
+                <li class="list-group-item bg-transparent">
+                    Experience <b class="float-end">@Pokemon.Experience</b>
+                </li>
+                <li class="list-group-item bg-transparent">
+                    Weight <b class="float-end">@Pokemon.Weight</b>
+                </li>
+                <li class="list-group-item bg-transparent">
+                    Height <b class="float-end">@Pokemon.Height</b>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-sm-6">
+            <img src="https://img.pokemondb.net/artwork/large/@(Pokemon.Name).jpg" alt="@Pokemon.Name"
+                 class="img-fluid d-block mx-auto" style="width:300px" />
+        </div>
+
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public string name { get; set; }
+
+    public Pokemon Pokemon { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Pokemon = await PokeApiClient.GetPokemon(name);
+    }
+
+}
