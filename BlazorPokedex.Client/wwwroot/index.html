@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>BlazorPokedex.Client</title>
     <base href="/" />
+    <script>
+        // Detecta el primer segmento de la URL y lo usa como base
+        const parts = window.location.pathname.split('/').filter(p => p);
+        const prefix = parts.length ? `/${parts[0]}/` : '/';
+        document.querySelector('base').setAttribute('href', prefix);
+    </script>
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
     <link href="BlazorPokedex.Client.styles.css" rel="stylesheet" />
